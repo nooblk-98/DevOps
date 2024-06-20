@@ -1,0 +1,44 @@
+name: Staging Deployment 
+
+on:
+  push:
+    branches:
+      - staging
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches: [  ]
+  workflow_dispatch:
+
+env:
+  PROJECT_NAME: Breadcrumbshirdaramani-react-2024
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.11.1
+          cache: 'npm'
+          cache-dependency-path: 'app/package-lock.json'
+      
+      - name: 'Build'
+        run: |
+          cd app
+          if [ -e package-lock.json ]; then
+          echo "clean install"
+          npm install --force
+          else
+          echo "full install"
+          npm install --force
+          fi
+          npm run build
+      - name: Publish
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.HM_PAGES_DEPLOY_API }}
+          accountId: ${{ secrets.HM_PAGES_DEPLOY_ACCOUNT }}
+          workingDirectory: 'app'
+          command: pages publish public --project-name=${{ env.PROJECT_NAME }}
