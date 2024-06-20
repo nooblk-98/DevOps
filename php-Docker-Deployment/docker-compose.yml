@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  freudenberg_php_2023_db:
+    image: mysql:5.7
+    container_name: freudenberg_php_2023-db
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: freudenberg_php_2023
+      MYSQL_USER: freudenberg_php_2023
+      MYSQL_PASSWORD: xvOguOlzmc6ewXQ3AxT9MonIWg5YPg
+
+  freudenberg_php_2024:
+    container_name: freudenberg-php-2024
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "11461:80"
+    pull_policy: always
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 50M
+

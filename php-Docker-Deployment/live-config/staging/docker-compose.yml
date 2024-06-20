@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  freudenberg_php_2024:
+    container_name: freudenberg-php-2024
+    image: ghcr.io/3csdesign/freudenberg-php-2023:staging
+    ports:
+        - "11461:80"
+    pull_policy: always
+    restart: always
+    volumes:
+    - /priv-app/freudenberg-php-2024/public/app:/var/www/html/.
+    - /priv-app/freudenberg-php-2024/config/storage:/var/www/html/storage/.
+    deploy:
+        resources:
+            limits:
+                cpus: '2.0'
+                memory: 512M
+            reservations:
+                cpus: '0.25'
+                memory: 50M
+
+    networks:
+      - mysql-server_default
+
+networks:
+  mysql-server_default:
+    external: true
