@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  admin-staging:
+    container_name: wowenglish-admin-dev
+    image: ghcr.io/zedtechhub/wow-english-admin-web:dev
+    ports:
+      - "3500:4173"
+    restart: always

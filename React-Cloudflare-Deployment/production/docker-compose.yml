@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  admin-production:
+    container_name: wowenglish-admin-production
+    image: ghcr.io/zedtechhub/wow-english-admin-web:main
+    ports:
+      - "6500:4173"
+    restart: always
